@@ -154,7 +154,7 @@ Transform:
   - {fileID: 1574726463}
   - {fileID: 920064918}
   m_Father: {fileID: 2047477525}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &487648950
 GameObject:
@@ -197,7 +197,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 487648950}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 284e6b1499cd37641ae8d47afeb8d3f7, type: 3}
+  m_Script: {fileID: 11500000, guid: 723ee98cf40c11846ba29b280ce79073, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   spawnerData: {fileID: 11400000, guid: 595e83ad11b794c479ad8479a28f6cef, type: 2}
@@ -329,7 +329,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   waves: []
   enemySpawner: {fileID: 487648952}
-  powerUpSpawner: {fileID: 0}
+  powerUpSpawner: {fileID: 920064919}
   countdownForWaves: 3
   countdownTransition: 5
   enemies:
@@ -340,7 +340,57 @@ MonoBehaviour:
   - {fileID: 2013968454449299606, guid: 34c13e9c0ee9a1c4096c609043356bc3, type: 3}
   - {fileID: 132470796675356591, guid: c1fb52968b792ae48808be535b2717a9, type: 3}
   - {fileID: 6694848789778983039, guid: e0bd22e4203e81d4681684cac92da2e7, type: 3}
+  powerUps:
+  - {fileID: 22357954131715196, guid: f7e3a9ffca6e01c4784d0203d329b7c6, type: 3}
+  - {fileID: 51424139508152892, guid: 169ae1ea3fdc5094188143b0311f7c0e, type: 3}
+  - {fileID: 8076605985089140297, guid: 1e3ca136e6057ed4abfb0808491ecca1, type: 3}
   waveCount: 15
+  powerUpSpawnCount: 3
+--- !u!1 &658159049
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 658159050}
+  - component: {fileID: 658159051}
+  m_Layer: 0
+  m_Name: Disposable Pool
+  m_TagString: Pool
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &658159050
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 658159049}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 920064918}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &658159051
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 658159049}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 197a82fd1793e4544b0a68b9f1c82ab0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  objectPool: []
+  poolSize: 10
 --- !u!1 &920064917
 GameObject:
   m_ObjectHideFlags: 0
@@ -350,8 +400,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 920064918}
+  - component: {fileID: 920064919}
   m_Layer: 0
-  m_Name: Usable Spawner
+  m_Name: Disposable Powerup Spawner
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -367,10 +418,24 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 658159050}
   m_Father: {fileID: 449394842}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &920064919
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 920064917}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 723ee98cf40c11846ba29b280ce79073, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spawnerData: {fileID: 11400000, guid: c09b87a5bb3ab454aad200033d578444, type: 2}
 --- !u!1 &994408875
 GameObject:
   m_ObjectHideFlags: 0
@@ -585,10 +650,40 @@ MonoBehaviour:
   m_GameObject: {fileID: 1574726462}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 284e6b1499cd37641ae8d47afeb8d3f7, type: 3}
+  m_Script: {fileID: 11500000, guid: 7c57d733bd317354c888ecea9dcbf805, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   spawnerData: {fileID: 11400000, guid: da3a898528a54614781108262ee1b7a0, type: 2}
+--- !u!1 &1639322732
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1639322733}
+  m_Layer: 0
+  m_Name: Powerup Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1639322733
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1639322732}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 2047477525}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1696826732
 GameObject:
   m_ObjectHideFlags: 0
@@ -663,6 +758,7 @@ Transform:
   m_Children:
   - {fileID: 574087533}
   - {fileID: 994408876}
+  - {fileID: 1639322733}
   - {fileID: 449394842}
   m_Father: {fileID: 0}
   m_RootOrder: 3

@@ -6,8 +6,6 @@ public class ProtectionShield : MonoSingleton<ProtectionShield>
 {
     public void OnTriggerEnter2D(Collider2D col)
     {
-        if (!col.CompareTag("Enemy")) return;
-        
         if (col.gameObject.TryGetComponent(out Enemy enemyObject))
         {
             Player.Instance.AddKillScore(enemyObject.score);

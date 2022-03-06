@@ -1,10 +1,11 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ProtectionOrb : Projectile
+public class WipeOrb : Projectile
 {
-    // Start is called before the first frame update
+    // private WipeEffect
     private void OnEnable()
     {
         Move();
@@ -20,10 +21,7 @@ public class ProtectionOrb : Projectile
 
         if(Utility.GameActiveSelf()) DisableTrigger();
     }
-    
-    // Eğer exceptionu çözemezsen, direkt olarak DeathTrigger yerine Collide yaz, base classta. ve 34. satıra Collide(); yapıştır.
-    // İlave olarak OnDisable'ı kapat.
-    
+
     private void OnTriggerEnter2D(Collider2D col)
     {
         if (CollisionConstraints(col))
@@ -31,12 +29,10 @@ public class ProtectionOrb : Projectile
             gameObject.SetActive(false);
         }
     }
-    
-    
-    // Collides and throws particles when colliding with Player, Shield and Protection Shield, classic
+
     protected override void DisableTrigger()
     {
-        // Protection particle tasarla
-        ParticleManager.Instance.SpawnParticle(gameObject);
+        ParticleManager.Instance.SpawnParticle(Player.Instance.gameObject);
+        Player.Instance.WipeEnemies();
     }
 }

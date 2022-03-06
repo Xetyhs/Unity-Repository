@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Random = System.Random;
@@ -82,6 +83,21 @@ public class ObjectPool : MonoBehaviour
         SetupAllRandom();
     }
 
+    public IEnumerator SleepActiveObjects()
+    {
+        for (var i = 0; i < poolIndex; i++)
+        {
+            if(objectPool[i].activeSelf)
+            {
+                yield return new WaitForSeconds(0.1f);
+                objectPool[i].SetActive(false);
+            }
+        }
+
+        yield return null;
+    }
+    
+    
     public void DestroyAll()
     {
         for (int i = 0; i < transform.childCount; i++)

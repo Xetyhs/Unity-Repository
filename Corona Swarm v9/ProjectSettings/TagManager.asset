@@ -14,6 +14,7 @@ TagManager:
   - Protection Shield
   - Heal Orb
   - Protection Orb
+  - Wipe Orb
   layers:
   - Default
   - TransparentFX

@@ -7,12 +7,25 @@ public class Shield : MonoSingleton<Shield>
     
     public void OnTriggerEnter2D(Collider2D col)
     {
-        if (!col.CompareTag("Enemy")) return;
-        
         if (col.gameObject.TryGetComponent(out Enemy enemyObject))
         {
             killCount++;
             Player.Instance.AddKillScore(enemyObject.score);
+        }
+        
+        if (col.gameObject.TryGetComponent(out HealOrb healOrbObject))
+        {
+            StartCoroutine(Player.Instance.Heal(healOrbObject.healAmount));
+        }
+
+        if (col.CompareTag("Protection Orb"))
+        {
+            StartCoroutine(Player.Instance.GetProtection());
+        }
+
+        if (col.CompareTag("Wipe Orb"))
+        {
+            Player.Instance.WipeEnemies();
         }
     }
 

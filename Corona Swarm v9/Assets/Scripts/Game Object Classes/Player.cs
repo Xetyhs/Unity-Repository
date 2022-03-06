@@ -82,6 +82,11 @@ public class Player : MonoSingleton<Player>
         this.score += score * _playerData.IngameScoreMultiplier + (Shield.Instance.GetKillCount() - Shield.Instance.comboTrigger);
     }
 
+    public void WipeEnemies()
+    {
+        WaveManager.Instance.WipeActiveEnemies();
+    }
+
     // Takes damage, and gets protection for 3 secs.
     
     /**
@@ -92,16 +97,18 @@ public class Player : MonoSingleton<Player>
         if (_playerData.hasProtection)
             yield break;
         
-        _playerData.TakeDamage(damage);
+        _playerData.DecreaseHealth(damage);
         
         if (!_playerData.isAlive())
         { 
-            DeathTrigger();
+            PlayerDeath();
         }
         yield return GetProtection();
     }
     
-    private void DeathTrigger()
+    
+    
+    private void PlayerDeath()
     {
         // When PLAYER dies, its current wave will be saved as checkpoint on PlayerData.
         // So, if player wants to restart, it can start from the latest wave.
@@ -116,13 +123,11 @@ public class Player : MonoSingleton<Player>
     
     public void OnTriggerEnter2D(Collider2D col)
     {
-        //if (!col.CompareTag("Enemy") || !col.CompareTag("Heal Orb")) return;
-
         if (col.gameObject.TryGetComponent(out Enemy enemyObject))
         {
             StartCoroutine(TakeDamage(enemyObject.damage));
         }
-
+        
         if (col.gameObject.TryGetComponent(out HealOrb healOrbObject))
         {
             StartCoroutine(Heal(healOrbObject.healAmount));
@@ -131,6 +136,11 @@ public class Player : MonoSingleton<Player>
         if (col.CompareTag("Protection Orb"))
         {
             StartCoroutine(GetProtection());
+        }
+
+        if (col.CompareTag("Wipe Orb"))
+        {
+            WipeEnemies();
         }
         
     }

@@ -15,7 +15,7 @@ public class PlayerData : ScriptableObject
     private const int MAX_HEALTH = 100;
     private const int MIN_HEALTH = 0;
 
-    private int _waveCheckpoint;
+    [SerializeField] private int _waveCheckpoint;
     // Arada denetlemek için [SerializeField] yap.
     private int _currentWave;
 
@@ -37,26 +37,23 @@ public class PlayerData : ScriptableObject
         get => _waveCheckpoint;
         private set => _waveCheckpoint = value;
     }
-    
     public int currentWave
     {
         get => _currentWave;
         set => _currentWave = value;
     }
-
     public bool hasProtection
     {
         get => _hasProtection;
         set => _hasProtection = value;
     }
-    
     public int IngameScoreMultiplier => _ingameScoreMultiplier;
     
+    /* --------------------------------------------------------------- */
     public void SetCheckpoint()
     {
         _waveCheckpoint = _currentWave;
     }
-    
     private void SetStartWave(bool setFlag)
     {
         if (!setFlag)
@@ -87,7 +84,7 @@ public class PlayerData : ScriptableObject
 
         this.health = health;
     }
-    public void TakeDamage(int damage)
+    public void DecreaseHealth(int damage)
     {
         health -= damage;
         if (health <= MIN_HEALTH)
@@ -111,6 +108,8 @@ public class PlayerData : ScriptableObject
         return highScore;
     }
     
+    /* --------------------------------------------------------------- */
+
     public bool isAlive()
     {
         return health > MIN_HEALTH;
@@ -127,8 +126,5 @@ public class PlayerData : ScriptableObject
             _currentWave++;
         else _currentWave = 0;
     }
-    
-    
-
     
 }

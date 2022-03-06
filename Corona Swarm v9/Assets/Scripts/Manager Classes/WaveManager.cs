@@ -29,6 +29,7 @@ public class WaveManager : MonoSingleton<WaveManager>
     /*--------------------------------------------------------------------*/
 
     private IEnumerator _waveSpawn;
+    private IEnumerator _powerupSpawn;
     
     /*--------------------------------------------------------------------*/
     
@@ -36,14 +37,15 @@ public class WaveManager : MonoSingleton<WaveManager>
 
     
     [SerializeField] private List<GameObject> enemies;
+    [SerializeField] private List<GameObject> powerUps;
     private bool[,] proceduralWaves;
     
+    [Header("Game Rounds")]
     public int waveCount;
     
-    
-    
-    
-    // Start is called before the first frame update
+    [Header("Power-up Count")]
+    public int powerUpSpawnCount;
+
 
     private void Awake()
     {
@@ -54,7 +56,7 @@ public class WaveManager : MonoSingleton<WaveManager>
 
     void Start()
     {
-        InitializeSpawner();
+        InitializeSpawners();
         _countdown = countdownForWaves;
     }
 
@@ -100,7 +102,9 @@ public class WaveManager : MonoSingleton<WaveManager>
         }
 
         _waveSpawn = enemySpawner.Spawn(waves[_waveIndex].spawnCount);
+        _powerupSpawn = powerUpSpawner.Spawn(powerUpSpawnCount);
         StartCoroutine(_waveSpawn);
+        StartCoroutine(_powerupSpawn);
         
         _spawnerState = State.Spawning;
         _countdown = countdownTransition;
@@ -110,6 +114,8 @@ public class WaveManager : MonoSingleton<WaveManager>
     private void SpawningState()
     {
         if(waves[_waveIndex].spawnCount > enemySpawner.GetSpawnedCount()) return;
+        
+        StopCoroutine(_powerupSpawn);
         
         if(enemySpawner.AreEnemiesAlive()) return;
         
@@ -150,6 +156,11 @@ public class WaveManager : MonoSingleton<WaveManager>
     
     /*--------------------------------------------------------------------*/
 
+    public void WipeActiveEnemies()
+    {
+        enemySpawner.DisableActives();
+    }
+    
     
     private void CreateProceduralWaves(int waveCount)
     {
@@ -219,11 +230,13 @@ public class WaveManager : MonoSingleton<WaveManager>
         // For initializing the waveIndex as the latest wave of the player.
         _waveIndex = Player.Instance.PlayerData.waveCheckpoint;
         _waveSpawn = enemySpawner.Spawn(waves[_waveIndex].spawnCount);
+        _powerupSpawn = powerUpSpawner.Spawn(powerUpSpawnCount);
     }
 
-    private void InitializeSpawner()
+    private void InitializeSpawners()
     {
-        enemySpawner.spawnerData.pool.WakeAllObjectsAs(waves[_waveIndex].waveObjects);
+        enemySpawner.GetData().pool.WakeAllObjectsAs(waves[_waveIndex].waveObjects);
+        powerUpSpawner.GetData().pool.WakeAllObjectsAs(powerUps.ToArray());
         _spawnerState = State.Counting;
     }
 }

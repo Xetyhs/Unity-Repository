@@ -1,3 +1,4 @@
+using UnityEditor;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -90,5 +91,20 @@ public class Utility : MonoBehaviour
     private static float GetRotationAngle(Vector3 rotationVector)
     {
         return Mathf.Atan2(rotationVector.y, rotationVector.x) * Mathf.Rad2Deg;
+    }
+
+    public static int GetRandomElement(params GameObject[] list)
+    {
+        return Random.Range(0, list.Length - 1);
+    }
+
+    public static bool ProbablityRandom(float probablity)
+    {
+        return Random.value <= probablity;
+    }
+
+    public static bool GameActiveSelf()
+    {
+        return EditorApplication.isPlayingOrWillChangePlaymode;
     }
 }
